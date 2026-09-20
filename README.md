@@ -1,28 +1,21 @@
 # Automatic Rain
 
-Automatic Rain is a small Windows app that automatically plays a selected rain MP3 continuously in the background.
+Automatic Rain is a small and easy Windows app that automatically plays a selected rain MP3 continuously in the background.
 
-The application has no conventional player or console window and does not appear in the taskbar. It is controlled through the raindrop icon in the Windows notification area in the lower-right corner.
+The application has no conventional player or console window and does not appear in the taskbar. Very simple. It is controlled through the raindrop icon in the Windows notification area in the lower-right corner:
+<img width="843" height="612" alt="image" src="https://github.com/user-attachments/assets/19f71a5c-4c3f-4577-8868-f51ce350c022" />
+
 
 ## Quick Start
 
 1. Run `AutomaticRain-Setup.exe`.
-2. Select a rain MP3.
+2. Select a MP3.
 3. Choose whether Automatic Rain should start automatically when you sign in to Windows.
 4. Click **Install and start**.
 5. The app then runs invisibly in the background and automatically repeats the MP3.
 
 The selected file is not copied or modified. Automatic Rain only stores the path to the MP3.
 
-## Requirements
-
-For the completed setup file:
-
-- Windows 10 or Windows 11
-- 64-bit system
-- An existing MP3 file
-- No administrator rights required
-- No separate .NET installation required
 
 The setup is a self-contained Windows application and includes the required runtime.
 
@@ -36,9 +29,14 @@ dist\AutomaticRain-Setup.exe
 
 After starting it, the setup dialog opens:
 
-1. Use **Select …** to choose the desired MP3.
-2. Enable or disable **Start automatically when signing in to Windows**.
+1. Use **Select …** to choose the desired MP3:
+   <img width="627" height="302" alt="image" src="https://github.com/user-attachments/assets/e47c534b-8d11-4652-8f17-834e527cf676" />
+
+2. Enable or disable **Start automatically when signing in to Windows**:
+   <img width="632" height="311" alt="image" src="https://github.com/user-attachments/assets/ec8230d3-b717-408b-85a6-171219bc19b1" />
+
 3. Select **Install and start**.
+  <img width="609" height="291" alt="image" src="https://github.com/user-    attachments/assets/b33b025a-54e8-4670-a8cd-112b9dc40546" />
 
 Automatic Rain is installed for the currently signed-in user. The following items are set up:
 
