@@ -6,7 +6,7 @@ $running = @(Get-Process -Name AutomaticRain -ErrorAction SilentlyContinue | Whe
 if (Test-Path -LiteralPath $executable) {
     Start-Process -FilePath $executable -ArgumentList '--stop' -WindowStyle Hidden -Wait
     foreach ($process in $running) {
-        if (-not $process.WaitForExit(10000)) { throw 'Bitte Automatic Rain zuerst ueber das Tray-Menue beenden.' }
+        if (-not $process.WaitForExit(10000)) { throw 'Please exit Automatic Rain from the tray menu first.' }
     }
 }
 
@@ -20,8 +20,8 @@ if (Test-Path -LiteralPath $appDirectory) {
     $resolvedDirectory = (Resolve-Path -LiteralPath $appDirectory).Path
     $folder = Get-Item -LiteralPath $appDirectory
     if ($resolvedDirectory -ne $expectedDirectory -or ($folder.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
-        throw 'Unerwarteter Installationspfad; Abbruch.'
+        throw 'Unexpected installation path; uninstall cancelled.'
     }
     Remove-Item -LiteralPath $resolvedDirectory -Recurse -Force
 }
-Write-Host 'Automatic Rain wurde entfernt. MP3 und persoenliche Einstellungen bleiben erhalten.'
+Write-Host 'Automatic Rain has been removed. Your MP3 file and personal settings have been kept.'

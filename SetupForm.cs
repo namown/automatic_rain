@@ -14,13 +14,13 @@ internal sealed class SetupForm : Forms.Form
 {
     private readonly Icon rainIcon = AppFiles.LoadIcon();
     private readonly Forms.TextBox audioPath = new() { ReadOnly = true, Dock = Forms.DockStyle.Fill, Name = "AudioPath" };
-    private readonly Forms.CheckBox startup = new() { Text = "Bei der Windows-Anmeldung automatisch starten", Checked = true, AutoSize = true };
-    private readonly Forms.Button install = new() { Text = "Installieren und starten", AutoSize = true, Enabled = false, Name = "Install" };
-    private readonly Forms.Label status = new() { Text = "Wähle zuerst deine MP3-Datei aus.", AutoSize = true };
+    private readonly Forms.CheckBox startup = new() { Text = "Start automatically when I sign in to Windows", Checked = true, AutoSize = true };
+    private readonly Forms.Button install = new() { Text = "Install and start", AutoSize = true, Enabled = false, Name = "Install" };
+    private readonly Forms.Label status = new() { Text = "Select your MP3 file to get started.", AutoSize = true };
 
     internal SetupForm()
     {
-        Text = "Automatic Rain – Einrichtung";
+        Text = "Automatic Rain – Setup";
         Icon = rainIcon;
         Font = new Font("Segoe UI", 10);
         AutoScaleMode = Forms.AutoScaleMode.Dpi;
@@ -40,14 +40,14 @@ internal sealed class SetupForm : Forms.Form
         layout.ColumnStyles.Add(new Forms.ColumnStyle(Forms.SizeType.AutoSize));
         var title = new Forms.Label
         {
-            Text = "Welche MP3 möchtest du im Hintergrund hören?",
+            Text = "Which MP3 would you like to play in the background?",
             AutoSize = true,
             Margin = new Forms.Padding(0, 0, 0, 16)
         };
         layout.Controls.Add(title, 0, 0);
         layout.SetColumnSpan(title, 2);
         layout.Controls.Add(audioPath, 0, 1);
-        var browse = new Forms.Button { Text = "Auswählen …", AutoSize = true, Name = "Browse" };
+        var browse = new Forms.Button { Text = "Browse …", AutoSize = true, Name = "Browse" };
         browse.Click += (_, _) => SelectAudio();
         layout.Controls.Add(browse, 1, 1);
         startup.Margin = new Forms.Padding(0, 16, 0, 8);
@@ -56,7 +56,7 @@ internal sealed class SetupForm : Forms.Form
         layout.Controls.Add(status, 0, 3);
         layout.SetColumnSpan(status, 2);
         var buttons = new Forms.FlowLayoutPanel { AutoSize = true, Dock = Forms.DockStyle.Fill, FlowDirection = Forms.FlowDirection.RightToLeft };
-        var cancel = new Forms.Button { Text = "Abbrechen", AutoSize = true, DialogResult = Forms.DialogResult.Cancel };
+        var cancel = new Forms.Button { Text = "Cancel", AutoSize = true, DialogResult = Forms.DialogResult.Cancel };
         buttons.Controls.Add(cancel);
         buttons.Controls.Add(install);
         layout.Controls.Add(buttons, 0, 4);
@@ -69,7 +69,7 @@ internal sealed class SetupForm : Forms.Form
             install.Enabled = false;
             browse.Enabled = false;
             cancel.Enabled = false;
-            status.Text = "Automatic Rain wird eingerichtet …";
+            status.Text = "Setting up Automatic Rain …";
             Refresh();
             try
             {
@@ -80,8 +80,10 @@ internal sealed class SetupForm : Forms.Form
             catch (Exception exception)
             {
                 RainApplication.Log("Installation: " + exception);
-                status.Text = "Einrichtung fehlgeschlagen. Bitte erneut versuchen.";
-                Forms.MessageBox.Show(this, exception.Message, "Automatic Rain", Forms.MessageBoxButtons.OK, Forms.MessageBoxIcon.Error);
+                status.Text = "Setup failed. Please try again.";
+                string message = exception is InvalidOperationException ? exception.Message :
+                    "Setup could not finish. Check that your MP3 file is accessible, close Automatic Rain, and try again.\n\nDetails were saved to:\n" + Path.Combine(AppFiles.Root, "app.log");
+                Forms.MessageBox.Show(this, message, "Automatic Rain", Forms.MessageBoxButtons.OK, Forms.MessageBoxIcon.Error);
                 install.Enabled = true;
                 browse.Enabled = true;
                 cancel.Enabled = true;
@@ -93,15 +95,15 @@ internal sealed class SetupForm : Forms.Form
     {
         using var dialog = new Forms.OpenFileDialog
         {
-            Title = "Welche Regen-MP3 möchtest du abspielen?",
-            Filter = "MP3-Dateien (*.mp3)|*.mp3",
+            Title = "Select an MP3 file",
+            Filter = "MP3 files (*.mp3)|*.mp3",
             CheckFileExists = true,
             RestoreDirectory = true
         };
         if (dialog.ShowDialog(this) != Forms.DialogResult.OK) return;
         audioPath.Text = dialog.FileName;
         install.Enabled = true;
-        status.Text = "Die Auswahl wird gespeichert. Du kannst sie später im Tray-Menü ändern.";
+        status.Text = "Your selection will be saved. You can change it later in the tray menu.";
     }
 
     protected override void Dispose(bool disposing)
@@ -116,7 +118,7 @@ internal static class Installer
     internal static void Install(string sourceExecutable, string audioFile, bool autoStart)
     {
         if (!File.Exists(audioFile) || !string.Equals(Path.GetExtension(audioFile), ".mp3", StringComparison.OrdinalIgnoreCase))
-            throw new InvalidOperationException("Bitte eine vorhandene MP3-Datei auswählen.");
+            throw new InvalidOperationException("Please select an existing MP3 file.");
 
         string appDirectory = Path.GetDirectoryName(AppFiles.Executable)!;
         Directory.CreateDirectory(appDirectory);
@@ -135,7 +137,7 @@ internal static class Installer
                 if (File.Exists(AppFiles.Settings))
                     settings = JsonSerializer.Deserialize<Settings>(File.ReadAllText(AppFiles.Settings)) ?? settings;
             }
-            catch (Exception exception) { RainApplication.Log("Alte Einstellungen: " + exception.Message); }
+            catch (Exception exception) { RainApplication.Log("Previous settings: " + exception.Message); }
             settings.AudioFile = Path.GetFullPath(audioFile);
             settings.Volume = double.IsFinite(settings.Volume) ? Math.Clamp(settings.Volume, 0, 1) : 0.5;
             string pendingSettings = AppFiles.Settings + ".pending";
@@ -168,7 +170,7 @@ internal static class Installer
                 }
                 catch (InvalidOperationException) { continue; }
                 if (!process.WaitForExit(10000))
-                    throw new InvalidOperationException("Bitte Automatic Rain im Tray-Menü beenden und erneut versuchen.");
+                    throw new InvalidOperationException("Please exit Automatic Rain from the tray menu and try again.");
             }
         }
     }
@@ -176,7 +178,7 @@ internal static class Installer
     private static void CreateShortcut()
     {
         Type shellType = Type.GetTypeFromProgID("WScript.Shell")
-            ?? throw new InvalidOperationException("Die Startmenü-Verknüpfung konnte nicht erstellt werden.");
+            ?? throw new InvalidOperationException("Could not create the Start menu shortcut.");
         dynamic shell = Activator.CreateInstance(shellType)!;
         try
         {
@@ -187,7 +189,7 @@ internal static class Installer
                 shortcut.TargetPath = AppFiles.Executable;
                 shortcut.WorkingDirectory = Path.GetDirectoryName(AppFiles.Executable);
                 shortcut.IconLocation = AppFiles.Executable + ",0";
-                shortcut.Description = "Regengeräusche im Hintergrund";
+                shortcut.Description = "Play MP3 audio in the background";
                 shortcut.Save();
             }
             finally { Marshal.FinalReleaseComObject(shortcut); }
