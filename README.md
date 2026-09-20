@@ -1,6 +1,6 @@
 # Automatic Rain
 
-Automatic Rain is a small and easy Windows app that automatically plays a selected rain MP3 continuously in the background.
+Automatic Rain is a small and easy Windows app that automatically plays a selected MP3 continuously in the background.
 
 The application has no conventional player or console window and does not appear in the taskbar. Very simple. It is controlled through the raindrop icon in the Windows notification area in the lower-right corner.
 
