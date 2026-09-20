@@ -1,58 +1,161 @@
 # Automatic Rain
 
-Eine kleine Windows-App, die eine MP3 in Endlosschleife im Hintergrund abspielt.
-Kein Player-Fenster, kein Konsolenfenster, kein Eintrag in der Taskleiste.
-Die App ist über ein Info-Symbol im Infobereich unten rechts erreichbar
-(gegebenenfalls hinter dem Pfeil **^**).
+Automatic Rain ist eine kleine Windows-App, die eine ausgewählte Regen-MP3 automatisch und dauerhaft im Hintergrund abspielt.
 
-## Installieren
+Die Anwendung besitzt kein normales Player- oder Konsolenfenster und erscheint nicht in der Taskleiste. Gesteuert wird sie über das Regentropfen-Symbol im Windows-Infobereich unten rechts. Falls das Symbol nicht direkt sichtbar ist, befindet es sich hinter dem Pfeil **^**.
 
-In PowerShell in diesem Ordner ausführen:
+## Kurz erklärt
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1
+1. `AutomaticRain-Setup.exe` starten.
+2. Eine Regen-MP3 auswählen.
+3. Entscheiden, ob Automatic Rain bei der Windows-Anmeldung automatisch starten soll.
+4. Auf **Installieren und starten** klicken.
+5. Die App läuft anschliessend unsichtbar im Hintergrund und wiederholt die MP3 automatisch.
+
+Die ausgewählte Datei wird nicht kopiert oder verändert. Automatic Rain speichert lediglich den Pfad zur MP3.
+
+## Voraussetzungen
+
+Für die fertige Setup-Datei:
+
+- Windows 10 oder Windows 11
+- 64-Bit-System
+- Eine vorhandene MP3-Datei
+- Keine Administratorrechte erforderlich
+- Keine separate .NET-Installation erforderlich
+
+Das Setup ist eine eigenständige Windows-Anwendung und enthält die benötigte Laufzeitumgebung.
+
+## Installation
+
+Die fertige Installationsdatei befindet sich hier:
+
+```text
+dist\AutomaticRain-Setup.exe
 ```
 
-Standarddatei: `C:\Rain\Rain\_01.mp3`. Eine andere Datei lässt sich direkt angeben:
+Nach dem Start öffnet sich der Einrichtungsdialog:
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1 -AudioFile 'C:\Rain\Rain_01.mp3'
-```
+1. Über **Auswählen …** die gewünschte MP3 festlegen.
+2. Die Option **Bei der Windows-Anmeldung automatisch starten** aktivieren oder deaktivieren.
+3. **Installieren und starten** auswählen.
 
-Der Installer baut die App, installiert sie für den aktuellen Benutzer unter
-`%LOCALAPPDATA%\AutomaticRain\app`, erstellt einen Startmenü-Eintrag, aktiviert
-den Windows-Autostart und startet die Wiedergabe. Administratorrechte sind nicht nötig.
-Benötigt werden Windows 10/11 x64, das .NET SDK 8 oder neuer zum Bauen und
-die .NET Desktop Runtime 8 zum Ausführen. Es werden keine externen NuGet-Pakete verwendet.
-Build-Dateien liegen außerhalb des Projekts unter `%LOCALAPPDATA%\AutomaticRainBuild`.
+Automatic Rain wird für den aktuell angemeldeten Benutzer installiert. Es werden folgende Elemente eingerichtet:
+
+- Anwendung unter `%LOCALAPPDATA%\AutomaticRain\app`
+- Einstellungen unter `%LOCALAPPDATA%\AutomaticRain\settings.json`
+- Startmenü-Eintrag **Automatic Rain**
+- Optionaler Autostart bei der Windows-Anmeldung
+
+Bereits vorhandene Installationen werden beim erneuten Ausführen des Setups aktualisiert.
+
+## Wie startet die App?
+
+Automatic Rain kann auf drei Arten starten:
+
+### Direkt nach der Installation
+
+Nach **Installieren und starten** wird die Anwendung sofort geöffnet und beginnt mit der Wiedergabe.
+
+### Automatisch mit Windows
+
+Ist die Autostart-Option aktiviert, startet Automatic Rain nach jeder Windows-Anmeldung. Die gespeicherte MP3 wird von vorne abgespielt.
+
+### Manuell
+
+Die App kann jederzeit über den Startmenü-Eintrag **Automatic Rain** geöffnet werden.
+
+Es kann immer nur eine Instanz gleichzeitig laufen. Wird die App mehrmals gestartet, entsteht deshalb keine doppelte Wiedergabe.
 
 ## Bedienung
 
-Rechtsklick auf das Info-Symbol:
+Mit einem Rechtsklick auf das Regentropfen-Symbol im Infobereich stehen folgende Funktionen zur Verfügung:
 
-- **Pause / Fortsetzen** – auch per Doppelklick auf das Symbol.
-- **MP3 auswählen …** – Datei wechseln; die Auswahl wird gespeichert.
-- **Lautstärke** – 10, 25, 50, 75 oder 100 Prozent; Startwert ist 50 Prozent.
-- **Mit Windows starten** – Autostart ein- oder ausschalten.
-- **Beenden** – Wiedergabe und App vollständig schließen.
+- **Pause / Fortsetzen** – unterbricht die Wiedergabe oder setzt sie fort.
+- **MP3 auswählen …** – wählt eine andere Audiodatei aus und speichert den neuen Pfad.
+- **Lautstärke** – setzt die Lautstärke auf 10, 25, 50, 75 oder 100 Prozent.
+- **Mit Windows starten** – schaltet den automatischen Start ein oder aus.
+- **Beenden** – beendet Wiedergabe und Anwendung vollständig.
 
-Bei der nächsten Windows-Anmeldung nach Einschalten oder Neustart beginnt die
-MP3 wieder von vorne, sofern der Autostart aktiviert ist. **Beenden** schaltet
-den Autostart nicht aus. Mehrfaches Starten erzeugt keine doppelte Wiedergabe.
-Die MP3 wird direkt in der App abgespielt und nicht mit einem externen Player geöffnet.
-Die Wiederholung kann abhängig von MP3 und Decoder eine kurze Pause haben.
+Ein Doppelklick auf das Symbol schaltet ebenfalls zwischen Pause und Wiedergabe um.
 
-Fehlt die Datei, bleibt die App ohne Popup im Infobereich und prüft alle
-15 Sekunden, ob sie inzwischen vorhanden ist. Über **MP3 auswählen …** lässt
-sich der Pfad korrigieren. Nach einem Decoderfehler die Datei erneut auswählen.
-Einstellungen und ein begrenztes Diagnoseprotokoll liegen unter
-`%LOCALAPPDATA%\AutomaticRain\settings.json` bzw. `app.log`.
+**Beenden** deaktiviert den Windows-Autostart nicht. Die App startet bei der nächsten Anmeldung erneut, solange **Mit Windows starten** aktiviert ist.
 
-## Deinstallieren
+## Verhalten bei fehlender oder fehlerhafter MP3
+
+Wenn die gespeicherte MP3 verschoben, umbenannt oder gelöscht wurde:
+
+- bleibt Automatic Rain im Infobereich aktiv,
+- erscheint kein störendes Popup,
+- prüft die App alle 15 Sekunden, ob die Datei wieder vorhanden ist,
+- kann über **MP3 auswählen …** ein neuer Pfad festgelegt werden.
+
+Bei einem Decoder- oder Wiedergabefehler sollte die MP3 erneut ausgewählt oder durch eine andere MP3 ersetzt werden.
+
+Je nach MP3-Datei und Windows-Decoder kann beim Übergang zur nächsten Wiederholung eine kurze Pause hörbar sein.
+
+## Einstellungen und Diagnose
+
+Automatic Rain speichert benutzerspezifische Daten hier:
+
+```text
+%LOCALAPPDATA%\AutomaticRain
+```
+
+Wichtige Dateien:
+
+- `settings.json` – MP3-Pfad und Lautstärke
+- `app.log` – begrenztes Diagnoseprotokoll
+- `app\AutomaticRain.exe` – installierte Anwendung
+
+Das Diagnoseprotokoll wird automatisch begrenzt, damit es nicht unbegrenzt wächst.
+
+## Deinstallation
+
+Im Repository kann die App mit folgendem Befehl entfernt werden:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\uninstall.ps1
 ```
 
-Beendet die App und entfernt Autostart, Startmenü-Verknüpfung und App-Dateien.
-Die MP3 sowie die persönlichen Einstellungen und das Protokoll bleiben erhalten.
+Das Skript:
+
+- beendet Automatic Rain,
+- entfernt den Windows-Autostart,
+- entfernt den Startmenü-Eintrag,
+- löscht die installierten Programmdateien.
+
+Die MP3, persönlichen Einstellungen und das Diagnoseprotokoll bleiben erhalten.
+
+## Setup selbst neu bauen
+
+Zum Erstellen einer neuen Setup-Datei wird das **.NET SDK 8 oder neuer** benötigt.
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
+```
+
+Die neue Datei wird anschliessend hier erstellt:
+
+```text
+dist\AutomaticRain-Setup.exe
+```
+
+Alternativ kann `install.ps1` verwendet werden. Dieses Skript baut zuerst eine neue Setup-Datei und startet danach den Einrichtungsdialog:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1
+```
+
+Die temporären Build-Dateien werden ausserhalb des Repositorys unter `%LOCALAPPDATA%\AutomaticRainBuild` abgelegt.
+
+## Technische Übersicht
+
+- C# / .NET 8
+- WPF und Windows Forms
+- Selbstständige Single-File-Anwendung für Windows x64
+- Keine externen NuGet-Pakete
+- Wiedergabe über den Windows-`MediaPlayer`
+- Einstellungen im JSON-Format
+- Autostart über den aktuellen Windows-Benutzer
+- Eigene Setup-Oberfläche und eigenes App-/Tray-Symbol
