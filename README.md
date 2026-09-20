@@ -2,8 +2,7 @@
 
 Automatic Rain is a small and easy Windows app that automatically plays a selected rain MP3 continuously in the background.
 
-The application has no conventional player or console window and does not appear in the taskbar. Very simple. It is controlled through the raindrop icon in the Windows notification area in the lower-right corner:
-<img width="843" height="612" alt="image" src="https://github.com/user-attachments/assets/19f71a5c-4c3f-4577-8868-f51ce350c022" />
+The application has no conventional player or console window and does not appear in the taskbar. Very simple. It is controlled through the raindrop icon in the Windows notification area in the lower-right corner.
 
 
 ## Quick Start
@@ -29,14 +28,11 @@ dist\AutomaticRain-Setup.exe
 
 After starting it, the setup dialog opens:
 
-1. Use **Select …** to choose the desired MP3:
-   <img width="627" height="302" alt="image" src="https://github.com/user-attachments/assets/e47c534b-8d11-4652-8f17-834e527cf676" />
+1. Use **Select …** to choose the desired MP3.
 
-2. Enable or disable **Start automatically when signing in to Windows**:
-   <img width="632" height="311" alt="image" src="https://github.com/user-attachments/assets/ec8230d3-b717-408b-85a6-171219bc19b1" />
+2. Enable or disable **Start automatically when signing in to Windows**.
 
 3. Select **Install and start**.
-  <img width="609" height="291" alt="image" src="https://github.com/user-    attachments/assets/b33b025a-54e8-4670-a8cd-112b9dc40546" />
 
 Automatic Rain is installed for the currently signed-in user. The following items are set up:
 
