@@ -23,6 +23,17 @@ internal static class Program
                 using (stop) stop.Set();
             return;
         }
+        Forms.Application.EnableVisualStyles();
+        Forms.Application.SetCompatibleTextRenderingDefault(false);
+        if (Array.Exists(args, arg => arg == "--install") ||
+            string.Equals(Path.GetFileName(Environment.ProcessPath), "AutomaticRain-Setup.exe", StringComparison.OrdinalIgnoreCase))
+        {
+            using var setupMutex = new Mutex(true, @"Local\AutomaticRain.Setup", out bool firstSetup);
+            if (!firstSetup) return;
+            try { Forms.Application.Run(new SetupForm()); }
+            finally { setupMutex.ReleaseMutex(); }
+            return;
+        }
         using var mutex = new Mutex(true, @"Local\AutomaticRain.Instance", out bool firstInstance);
         if (!firstInstance) return;
         try
@@ -38,16 +49,16 @@ internal static class Program
 
 internal sealed class Settings
 {
-    public string AudioFile { get; set; } = @"C:\Rain\Rain\_01.mp3";
+    public string AudioFile { get; set; } = "";
     public double Volume { get; set; } = 0.5;
 }
 
 internal sealed class RainApplication : IDisposable
 {
     private const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
-    private static readonly string DataDirectory = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AutomaticRain");
-    private static readonly string SettingsPath = Path.Combine(DataDirectory, "settings.json");
+    private static readonly string DataDirectory = AppFiles.Root;
+    private static readonly string SettingsPath = AppFiles.Settings;
+    private readonly System.Drawing.Icon icon = AppFiles.LoadIcon();
     private readonly MediaPlayer player = new();
     private readonly Forms.NotifyIcon tray;
     private readonly Forms.ContextMenuStrip menu = new();
@@ -117,7 +128,7 @@ internal sealed class RainApplication : IDisposable
         menu.Items.Add("Beenden", null, (_, _) => application.Shutdown());
         tray = new Forms.NotifyIcon
         {
-            Icon = System.Drawing.SystemIcons.Information,
+            Icon = icon,
             Text = "Automatic Rain",
             ContextMenuStrip = menu,
             Visible = true
@@ -132,6 +143,8 @@ internal sealed class RainApplication : IDisposable
         };
         retry.Start();
         OpenAudio();
+        if (string.IsNullOrWhiteSpace(settings.AudioFile))
+            application.Dispatcher.BeginInvoke(new Action(ChooseFile));
         Log("Automatic Rain gestartet.");
     }
 
@@ -145,8 +158,9 @@ internal sealed class RainApplication : IDisposable
         waitingForFile = !File.Exists(settings.AudioFile);
         if (waitingForFile)
         {
-            SetStatus("MP3 fehlt – Datei auswählen");
-            Log("Datei fehlt: " + settings.AudioFile);
+            bool noSelection = string.IsNullOrWhiteSpace(settings.AudioFile);
+            SetStatus(noSelection ? "Bitte MP3 auswählen" : "MP3 fehlt – Datei auswählen");
+            Log(noSelection ? "Noch keine MP3 ausgewählt." : "Datei fehlt: " + settings.AudioFile);
             return;
         }
         try
@@ -229,8 +243,9 @@ internal sealed class RainApplication : IDisposable
             if (File.Exists(SettingsPath))
             {
                 var value = JsonSerializer.Deserialize<Settings>(File.ReadAllText(SettingsPath));
-                if (value != null && !string.IsNullOrWhiteSpace(value.AudioFile))
+                if (value != null)
                 {
+                    value.AudioFile ??= "";
                     value.Volume = double.IsFinite(value.Volume) ? Math.Clamp(value.Volume, 0, 1) : 0.5;
                     return value;
                 }
@@ -275,6 +290,7 @@ internal sealed class RainApplication : IDisposable
         player.Close();
         tray.Visible = false;
         tray.Dispose();
+        icon.Dispose();
         menu.Dispose();
         stopEvent.Dispose();
         Log("Automatic Rain beendet.");

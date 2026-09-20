@@ -7,6 +7,11 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <AssemblyName>AutomaticRain</AssemblyName>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
+    <ApplicationIcon>Pictures\Raindrop.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pictures\Raindrop.ico" LogicalName="AutomaticRain.Raindrop.ico" />
+  </ItemGroup>
 </Project>
