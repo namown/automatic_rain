@@ -1,161 +1,161 @@
 # Automatic Rain
 
-Automatic Rain ist eine kleine Windows-App, die eine ausgewählte Regen-MP3 automatisch und dauerhaft im Hintergrund abspielt.
+Automatic Rain is a small Windows app that automatically plays a selected rain MP3 continuously in the background.
 
-Die Anwendung besitzt kein normales Player- oder Konsolenfenster und erscheint nicht in der Taskleiste. Gesteuert wird sie über das Regentropfen-Symbol im Windows-Infobereich unten rechts. Falls das Symbol nicht direkt sichtbar ist, befindet es sich hinter dem Pfeil **^**.
+The application has no conventional player or console window and does not appear in the taskbar. It is controlled through the raindrop icon in the Windows notification area in the lower-right corner.
 
-## Kurz erklärt
+## Quick Start
 
-1. `AutomaticRain-Setup.exe` starten.
-2. Eine Regen-MP3 auswählen.
-3. Entscheiden, ob Automatic Rain bei der Windows-Anmeldung automatisch starten soll.
-4. Auf **Installieren und starten** klicken.
-5. Die App läuft anschliessend unsichtbar im Hintergrund und wiederholt die MP3 automatisch.
+1. Run `AutomaticRain-Setup.exe`.
+2. Select a rain MP3.
+3. Choose whether Automatic Rain should start automatically when you sign in to Windows.
+4. Click **Install and start**.
+5. The app then runs invisibly in the background and automatically repeats the MP3.
 
-Die ausgewählte Datei wird nicht kopiert oder verändert. Automatic Rain speichert lediglich den Pfad zur MP3.
+The selected file is not copied or modified. Automatic Rain only stores the path to the MP3.
 
-## Voraussetzungen
+## Requirements
 
-Für die fertige Setup-Datei:
+For the completed setup file:
 
-- Windows 10 oder Windows 11
-- 64-Bit-System
-- Eine vorhandene MP3-Datei
-- Keine Administratorrechte erforderlich
-- Keine separate .NET-Installation erforderlich
+- Windows 10 or Windows 11
+- 64-bit system
+- An existing MP3 file
+- No administrator rights required
+- No separate .NET installation required
 
-Das Setup ist eine eigenständige Windows-Anwendung und enthält die benötigte Laufzeitumgebung.
+The setup is a self-contained Windows application and includes the required runtime.
 
 ## Installation
 
-Die fertige Installationsdatei befindet sich hier:
+The completed installer is located here:
 
 ```text
 dist\AutomaticRain-Setup.exe
 ```
 
-Nach dem Start öffnet sich der Einrichtungsdialog:
+After starting it, the setup dialog opens:
 
-1. Über **Auswählen …** die gewünschte MP3 festlegen.
-2. Die Option **Bei der Windows-Anmeldung automatisch starten** aktivieren oder deaktivieren.
-3. **Installieren und starten** auswählen.
+1. Use **Select …** to choose the desired MP3.
+2. Enable or disable **Start automatically when signing in to Windows**.
+3. Select **Install and start**.
 
-Automatic Rain wird für den aktuell angemeldeten Benutzer installiert. Es werden folgende Elemente eingerichtet:
+Automatic Rain is installed for the currently signed-in user. The following items are set up:
 
-- Anwendung unter `%LOCALAPPDATA%\AutomaticRain\app`
-- Einstellungen unter `%LOCALAPPDATA%\AutomaticRain\settings.json`
-- Startmenü-Eintrag **Automatic Rain**
-- Optionaler Autostart bei der Windows-Anmeldung
+- Application under `%LOCALAPPDATA%\AutomaticRain\app`
+- Settings under `%LOCALAPPDATA%\AutomaticRain\settings.json`
+- Start menu entry **Automatic Rain**
+- Optional automatic startup when signing in to Windows
 
-Bereits vorhandene Installationen werden beim erneuten Ausführen des Setups aktualisiert.
+Existing installations are updated when the setup is run again.
 
-## Wie startet die App?
+## How Does the App Start?
 
-Automatic Rain kann auf drei Arten starten:
+Automatic Rain can start in three ways:
 
-### Direkt nach der Installation
+### Immediately After Installation
 
-Nach **Installieren und starten** wird die Anwendung sofort geöffnet und beginnt mit der Wiedergabe.
+After selecting **Install and start**, the application opens immediately and begins playback.
 
-### Automatisch mit Windows
+### Automatically with Windows
 
-Ist die Autostart-Option aktiviert, startet Automatic Rain nach jeder Windows-Anmeldung. Die gespeicherte MP3 wird von vorne abgespielt.
+If the automatic startup option is enabled, Automatic Rain starts after every Windows sign-in. The saved MP3 starts from the beginning.
 
-### Manuell
+### Manually
 
-Die App kann jederzeit über den Startmenü-Eintrag **Automatic Rain** geöffnet werden.
+The app can be opened at any time through the **Automatic Rain** Start menu entry.
 
-Es kann immer nur eine Instanz gleichzeitig laufen. Wird die App mehrmals gestartet, entsteht deshalb keine doppelte Wiedergabe.
+Only one instance can run at a time. Starting the app multiple times therefore does not result in duplicate playback.
 
-## Bedienung
+## Usage
 
-Mit einem Rechtsklick auf das Regentropfen-Symbol im Infobereich stehen folgende Funktionen zur Verfügung:
+Right-click the raindrop icon in the notification area to access the following functions:
 
-- **Pause / Fortsetzen** – unterbricht die Wiedergabe oder setzt sie fort.
-- **MP3 auswählen …** – wählt eine andere Audiodatei aus und speichert den neuen Pfad.
-- **Lautstärke** – setzt die Lautstärke auf 10, 25, 50, 75 oder 100 Prozent.
-- **Mit Windows starten** – schaltet den automatischen Start ein oder aus.
-- **Beenden** – beendet Wiedergabe und Anwendung vollständig.
+- **Pause / Resume** – pauses playback or resumes it.
+- **Select MP3 …** – selects another audio file and saves its new path.
+- **Volume** – sets the volume to 10, 25, 50, 75, or 100 percent.
+- **Start with Windows** – enables or disables automatic startup.
+- **Exit** – completely stops playback and closes the application.
 
-Ein Doppelklick auf das Symbol schaltet ebenfalls zwischen Pause und Wiedergabe um.
+Double-clicking the icon also toggles between pausing and resuming playback.
 
-**Beenden** deaktiviert den Windows-Autostart nicht. Die App startet bei der nächsten Anmeldung erneut, solange **Mit Windows starten** aktiviert ist.
+**Exit** does not disable Windows startup. The app starts again at the next sign-in as long as **Start with Windows** is enabled.
 
-## Verhalten bei fehlender oder fehlerhafter MP3
+## Behavior When the MP3 Is Missing or Invalid
 
-Wenn die gespeicherte MP3 verschoben, umbenannt oder gelöscht wurde:
+If the saved MP3 has been moved, renamed, or deleted:
 
-- bleibt Automatic Rain im Infobereich aktiv,
-- erscheint kein störendes Popup,
-- prüft die App alle 15 Sekunden, ob die Datei wieder vorhanden ist,
-- kann über **MP3 auswählen …** ein neuer Pfad festgelegt werden.
+- Automatic Rain remains active in the notification area,
+- no intrusive popup is displayed,
+- the app checks every 15 seconds whether the file is available again,
+- a new path can be selected through **Select MP3 …**.
 
-Bei einem Decoder- oder Wiedergabefehler sollte die MP3 erneut ausgewählt oder durch eine andere MP3 ersetzt werden.
+If a decoding or playback error occurs, select the MP3 again or replace it with another MP3.
 
-Je nach MP3-Datei und Windows-Decoder kann beim Übergang zur nächsten Wiederholung eine kurze Pause hörbar sein.
+Depending on the MP3 file and the Windows decoder, a short pause may be audible when the next repetition begins.
 
-## Einstellungen und Diagnose
+## Settings and Diagnostics
 
-Automatic Rain speichert benutzerspezifische Daten hier:
+Automatic Rain stores user-specific data here:
 
 ```text
 %LOCALAPPDATA%\AutomaticRain
 ```
 
-Wichtige Dateien:
+Important files:
 
-- `settings.json` – MP3-Pfad und Lautstärke
-- `app.log` – begrenztes Diagnoseprotokoll
-- `app\AutomaticRain.exe` – installierte Anwendung
+- `settings.json` – MP3 path and volume
+- `app.log` – limited diagnostic log
+- `app\AutomaticRain.exe` – installed application
 
-Das Diagnoseprotokoll wird automatisch begrenzt, damit es nicht unbegrenzt wächst.
+The diagnostic log is automatically limited so that it does not grow indefinitely.
 
-## Deinstallation
+## Uninstallation
 
-Im Repository kann die App mit folgendem Befehl entfernt werden:
+From the repository, the app can be removed with the following command:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\uninstall.ps1
 ```
 
-Das Skript:
+The script:
 
-- beendet Automatic Rain,
-- entfernt den Windows-Autostart,
-- entfernt den Startmenü-Eintrag,
-- löscht die installierten Programmdateien.
+- stops Automatic Rain,
+- removes Windows startup,
+- removes the Start menu entry,
+- deletes the installed program files.
 
-Die MP3, persönlichen Einstellungen und das Diagnoseprotokoll bleiben erhalten.
+The MP3, personal settings, and diagnostic log are retained.
 
-## Setup selbst neu bauen
+## Rebuilding the Setup
 
-Zum Erstellen einer neuen Setup-Datei wird das **.NET SDK 8 oder neuer** benötigt.
+The **.NET SDK 8 or newer** is required to create a new setup file.
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 ```
 
-Die neue Datei wird anschliessend hier erstellt:
+The new file is then created here:
 
 ```text
 dist\AutomaticRain-Setup.exe
 ```
 
-Alternativ kann `install.ps1` verwendet werden. Dieses Skript baut zuerst eine neue Setup-Datei und startet danach den Einrichtungsdialog:
+Alternatively, `install.ps1` can be used. This script first builds a new setup file and then starts the setup dialog:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1
 ```
 
-Die temporären Build-Dateien werden ausserhalb des Repositorys unter `%LOCALAPPDATA%\AutomaticRainBuild` abgelegt.
+Temporary build files are stored outside the repository under `%LOCALAPPDATA%\AutomaticRainBuild`.
 
-## Technische Übersicht
+## Technical Overview
 
 - C# / .NET 8
-- WPF und Windows Forms
-- Selbstständige Single-File-Anwendung für Windows x64
-- Keine externen NuGet-Pakete
-- Wiedergabe über den Windows-`MediaPlayer`
-- Einstellungen im JSON-Format
-- Autostart über den aktuellen Windows-Benutzer
-- Eigene Setup-Oberfläche und eigenes App-/Tray-Symbol
+- WPF and Windows Forms
+- Self-contained single-file application for Windows x64
+- No external NuGet packages
+- Playback through the Windows `MediaPlayer`
+- Settings in JSON format
+- Startup through the current Windows user account
+- Custom setup interface and custom app/tray icon
