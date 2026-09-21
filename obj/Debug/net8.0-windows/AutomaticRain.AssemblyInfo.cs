@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AutomaticRain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.1.1.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.1.1+632e183320a2edfe9a13a2a96a71b8b304dffadc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.1.1+24fe61c6a7fbb5e27f02e6d1a586c5395cdad08d")]
 [assembly: System.Reflection.AssemblyProductAttribute("AutomaticRain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AutomaticRain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.1.1.0")]
